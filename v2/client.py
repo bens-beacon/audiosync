@@ -230,7 +230,7 @@ def INIT():
 
     # simulate receive
     buffer      = []
-    for i in range(1,68):
+    for i in range(1,10):
 
         data            = b'\x00' * 4112
         paket           = rtp.createPacket(1,77777,1,data)
@@ -247,20 +247,29 @@ def INIT():
         outdata[:]      = data                      # put to stream
         FAIL_COUNTER    = 0                         # reset fails
 
-    # simulate play
-    while len(buffer) > 0:
-        prev        = buffer.pop(0)
-        prev_len    = len(prev)
+    # open stream
+    with sd.RawOutputStream(
+        device              = args.device,
+        samplerate          = 44100,
+        blocksize           = args.blocksize,   # its 
+        dtype               = 'int16',          # info['type']
+        channels            = 1,
+        latency             = 'high',           # its to have on every device same latency
+        callback            = callback
+        ):
+        while len(buffer) > 0:
+            prev        = buffer.pop(0)
+            prev_len    = len(prev)
 
     # sleep sound latency
     if not(args.device):
         device_latency  = sd.query_devices(0)['default_high_output_latency']
     else:    
         device_latency  = sd.query_devices(args.device)['default_high_output_latency']
-    tz.sleep(device_latency*2)
+    tz.sleep(device_latency)
 
     end         = tz.time()
-    INITTIME    = end-start
+    INITTIME    = (end-start)
 
     print (' [INIT] device latency: {}'.format(device_latency))
     print (' [INIT] processing time: {}'.format(INITTIME+args.low))   
