@@ -186,7 +186,7 @@ def callback(outdata, frames, time, status):
 
         else:
             outdata[:] = b'\x00' * (2*args.blocksize)
-            print (' [CALLBCK] ... nothing to play')
+            print (' [CALLBACK] ... nothing to play')
             FAIL_COUNTER += 1
 
 
