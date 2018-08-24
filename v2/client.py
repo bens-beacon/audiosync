@@ -53,8 +53,8 @@ if args.showdevice:
     RECEIVE()
     Connect with server and receive audio content.
 """
-BUFFER      = []                                # contain actually just one paket
-PAKET_SIZE  = 32768                             # Start paketsize, after first paket it will adapt.
+BUFFER          = []                            # contain actually just one paket
+PAKET_SIZE      = 32768                         # Start paketsize, after first paket it will adapt.
 COUNTER         = 0
 LOST            = 0                             # interessting for wlan
 INITTIME        = 0
@@ -65,30 +65,36 @@ def RECEIVE():
     global BUFFER
     global PAKET_SIZE
 
-    sock.sendto('WANNA CONNECT TO SERVER', (args.server, args.port))
     msg = 'WANNA HAVE THE R'*64   # 1024
 
-    # connection mode
-    # !!! need to add initfunction here
+    # start with connection 
+    sock.sendto('WANNA CONNECT TO SERVER', (args.server, args.port))
+    
+    # connection mode ##############################################################################
     while True:
+
+        # wait for answer of server
         try:
             data, first_addr    = sock.recvfrom(PAKET_SIZE)
         except:
-            print (' [RECEIVE] try to reconnect')
+            print (' [RECEIVE] something went wrong, try to connect again!')
             sock.sendto('WANNA CONNECT TO SERVER', (args.server, args.port))
             continue
 
+        # wait processing time and send message back
         if data == msg:
-            tz.sleep(INITTIME*2 + args.low*2)                                             # !!! sleep here init time      
-            sock.sendto(data,(args.server, args.port))              # send rtt request
+            tz.sleep(INITTIME*2 + args.low*2)           
+            # send rtt request
+            sock.sendto(data,(args.server, args.port))     
 
+        # if everything was good
         if len(BUFFER) == 0:
             data, second_addr = sock.recvfrom(PAKET_SIZE)
             if data == 'RTT DONE' and first_addr == second_addr:
                 print (' [RECEIVE] connection successfull')
                 break
 
-    # normal receive mode
+    # normal receive mode ##########################################################################
     prev_data = 0
     while True:
         try:
@@ -246,9 +252,6 @@ def INIT():
         prev        = buffer.pop(0)
         prev_len    = len(prev)
 
-    # simulate play
-
-
     # sleep sound latency
     if not(args.device):
         device_latency  = sd.query_devices(0)['default_high_output_latency']
@@ -257,10 +260,9 @@ def INIT():
     tz.sleep(device_latency*2)
 
     end         = tz.time()
-
     INITTIME    = end-start
-    INITTIME    = 0
-    print (' [INITTIME] {} + {} = {}'.format(INITTIME, args.low*2,INITTIME*2 + args.low*2))   
+
+    print (' [INIT] processing time: {}'.format(INITTIME))   
 
 """
     ################################################################################################
