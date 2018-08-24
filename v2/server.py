@@ -164,30 +164,30 @@ def SENDER(ADDRESS, LATENZ):
 
             ########################################################################################
             ###### TEST PART #######################################################################
-            if count == 1:
-                start = time.time()
-
-                sock.sendto(data, ADDRESS)                                  # send
-                try:
-                    data, first_addr = sock.recvfrom(4112)
-                except:
-                    print ('Timout')
-                
-                end = time.time()
-                f   = (4112/1024)
-                gf  = ((end - start)/2) / f
-
-                #print (' [TEST] {}  {}  {}  {}'.format(ADDRESS,LATENZ,gf,LATENZ-gf))
-                print (' [TEST] %s  %f  %f  %f' % (ADDRESS,LATENZ,gf,LATENZ-gf))
-                time.sleep(CHUNK_TIMEOUT-gf)                                # wait
-
+            #if count == 1:
+            #    start = time.time()
+            #
+            #    sock.sendto(data, ADDRESS)                                  # send
+            #    try:
+            #       data, first_addr = sock.recvfrom(4112)
+            #    except:
+            #        print ('Timout')
+            #    
+            #    end = time.time()
+            #    f   = (4112/1024)
+            #    gf  = ((end - start)/2) / f
+            #
+            #    #print (' [TEST] {}  {}  {}  {}'.format(ADDRESS,LATENZ,gf,LATENZ-gf))
+            #    print (' [TEST] %s  %f  %f  %f' % (ADDRESS,LATENZ,gf,LATENZ-gf))
+            #    time.sleep(CHUNK_TIMEOUT-gf)                                # wait
+            #
             ########################################################################################
             ###### TEST PART #######################################################################
 
 
-            else:
-                sock.sendto(data, ADDRESS)                                  # send
-                time.sleep(CHUNK_TIMEOUT)                                   # wait
+            #else:
+            sock.sendto(data, ADDRESS)                                  # send
+            time.sleep(CHUNK_TIMEOUT)                                   # wait
         
 """
     ################################################################################################
