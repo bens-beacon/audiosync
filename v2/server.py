@@ -59,7 +59,7 @@ PLAY = True
 def CONNECTOR(UDP_IP, UDP_PORT):
     # wait for new connections
     while True:
-        print (' [CONNECTOR] waiting for clients on {} : {} ...'.format(UDP_IP,UDP_PORT))
+        print (' [CONNECTOR] waiting for clients on ({}, {}) ...'.format(UDP_IP,UDP_PORT))
 
         # CONTROL_STATUS -> wait for connection
         while CONTROL_STATUS == 0:
@@ -69,7 +69,7 @@ def CONNECTOR(UDP_IP, UDP_PORT):
                 if data == 'WANNA CONNECT TO SERVER':  
                         rtt_time = rtt.getRTT(sock,first_addr)
                         sock.sendto('RTT DONE', first_addr)
-                        print (' [CONNECTOR] got new client on {} : {} RTT: {}'.format(
+                        print (' [CONNECTOR] got new client on ({}, {}) RTT: {}'.format(
                             first_addr[0],first_addr[1],rtt_time))
                         rtt.addClient(first_addr,rtt_time)
             except:
@@ -103,7 +103,7 @@ def RTTSETTER():
     global SYNC
     rtt_wait_time = args.ttimeout
 
-    print (' [RTTSETTER] collect RTTs')
+    #print (' [RTTSETTER] collect RTTs')
 
     while True:
         rtt_wait_time = (rtt_wait_time*1)                               # factor 1.1x  
@@ -113,7 +113,6 @@ def RTTSETTER():
         for client in rtt.CLIENTS:
             rtt_time = rtt.getRTT(sock,client[0])                       # get rtt 
             #print ('{} , {}'.format(client[0],rtt_time))
-
 
             if rtt == False:                                            # no answer
                 print (' [RTTSETTER] no answer received from {}'.format(client[0]))
@@ -207,7 +206,7 @@ def OPENFILE():
 
             filesize    = os.path.getsize(args.filename)
             data        = f.buffer_read(args.blocksize, dtype='int16')
-
+            print (' [INFO] -> start Playing')
             print (' [OPENFILE] Samplerate: {}  Channels: {}  Blocksize: {}   Filesize: {}'.format(
                 f.samplerate,f.channels,args.blocksize,filesize))
 
@@ -249,7 +248,7 @@ if __name__ == '__main__':
     sock.settimeout(args.timeout)
     sock.bind((args.server, args.port))
 
-    print (' [MAIN] I\'m {} : {} '.format(sock.getsockname(),args.port))
+    print (' [MAIN] I\'m {}'.format(sock.getsockname()))
 
     # init Buffer
     i = 0
@@ -261,7 +260,7 @@ if __name__ == '__main__':
 
     # control
     while True:
-        c = raw_input(" [MAIN] CONTROL:  p - PLAY | c - EXIT\n")
+        c = raw_input(" [MAIN] Controlkeys:  'p' - PLAY / 'c' - EXIT\n")
 
         if c == 'c':
             print (' [MAIN] hard Exit \n')
