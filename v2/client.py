@@ -226,40 +226,45 @@ def STATE():
 def INIT():
     global INITTIME
 
+    simulated_max = 10
+
     start       = tz.time()
 
     # simulate receive
-    buffer      = []
-    for i in range(1,10):
+    for i in range(1,simulated_max):
+        buffer      = []
+        for i in range(1,5):
 
-        data            = b'\x00' * 4112
-        paket           = rtp.createPacket(1,77777,1,data)
-        seqnum, data    = rtp.getData(paket)
+            data            = b'\x00' * 4112
+            paket           = rtp.createPacket(1,77777,1,data)
+            seqnum, data    = rtp.getData(paket)
         
-        if data == 'WANNA HAVE THE RTT':
-            pass
-        else:
-            buffer.append(data)
+            if data == 'WANNA HAVE THE RTT':
+                pass
+            else:
+                buffer.append(data)
 
-        outdata         = []
-        seqnum, paket   = rtp.getData(paket)   
-        data            = paket['payload']
-        outdata[:]      = data                      # put to stream
-        FAIL_COUNTER    = 0                         # reset fails
+            outdata         = []
+            seqnum, paket   = rtp.getData(paket)   
+            data            = paket['payload']
+            outdata[:]      = data                      # put to stream
+            FAIL_COUNTER    = 0                         # reset fails
 
-    # open stream
-    with sd.RawOutputStream(
-        device              = args.device,
-        samplerate          = 44100,
-        blocksize           = args.blocksize,   # its 
-        dtype               = 'int16',          # info['type']
-        channels            = 1,
-        latency             = 'high',           # its to have on every device same latency
-        callback            = callback
-        ):
-        while len(buffer) > 0:
-            prev        = buffer.pop(0)
-            prev_len    = len(prev)
+    
+        # open stream
+        with sd.RawOutputStream(
+            device              = args.device,
+            samplerate          = 44100,
+            blocksize           = args.blocksize,   # its 
+            dtype               = 'int16',          # info['type']
+            channels            = 1,
+            latency             = 'high',           # its to have on every device same latency
+            callback            = callback
+            ):
+            while len(buffer) > 0:
+                prev        = buffer.pop(0)
+                prev_len    = len(prev)
+        sd.stop()
 
     # sleep sound latency
     if not(args.device):
