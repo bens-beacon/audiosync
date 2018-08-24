@@ -159,7 +159,7 @@ def PLAY():
                 latency             = 'high',           # its to have on every device same latency
                 callback            = callback
             ):
-                while FAIL_COUNTER < 5:                 # after 5 fails -> break
+                while FAIL_COUNTER < 1:                 # after 5 fails -> break
                     pass
 
         else:
@@ -262,7 +262,9 @@ def INIT():
     end         = tz.time()
     INITTIME    = end-start
 
-    print (' [INIT] processing time: {}'.format(INITTIME))   
+    print (' [INIT] device latency: {}'.format(device_latency))
+    print (' [INIT] processing time: {}'.format(INITTIME+args.low))   
+    
 
 """
     ################################################################################################
