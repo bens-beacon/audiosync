@@ -260,7 +260,7 @@ def INIT():
             dtype               = 'int16',          # info['type']
             channels            = 1,
             latency             = 'high',           # its to have on every device same latency
-            callback            = callback
+            callback            = sim_callback
             ):
             while len(buffer) > 0:
                 prev        = buffer.pop(0)
@@ -279,7 +279,10 @@ def INIT():
 
     #print (' [INIT] device latency: {}'.format(device_latency))
     print (' [INIT] processing time: {}'.format(INITTIME+args.low))   
-    
+
+# simulate callback function
+def sim_callback(outdata, frames, time, status):
+    outdata[:] = b'\x00' * (2*args.blocksize)
 
 """
     ################################################################################################
