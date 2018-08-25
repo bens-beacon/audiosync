@@ -41,7 +41,7 @@ class rtt:
             rtt = (time_stop - time_start)/2
 
             # multiplicate with real packet time
-            #rtt = rtt * 1.0156
+            # rtt = rtt * 4
         
         return rtt
 
