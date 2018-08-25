@@ -222,7 +222,8 @@ def OPENFILE():
                 count          +=1
                 end             = time.time()                           # end of creation
 
-                paket_creation_time = (end-start)+0.000006              # addtion time-function
+                #paket_creation_time = (end-start)+0.00000005            # addtion time-function
+                paket_creation_time = (end-start)
 
                 # global periodtime
                 CHUNK_TIMEOUT = (float(args.blocksize) / f.samplerate)-paket_creation_time  
