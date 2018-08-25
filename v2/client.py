@@ -226,11 +226,12 @@ def STATE():
 def INIT():
     global INITTIME
 
-    simulated_max = 10
+    # the 
+    simulated_max = 17
 
     start       = tz.time()
 
-    # simulate receive
+    # simulate receive and play
     for i in range(1,simulated_max):
         buffer      = []
         for i in range(1,5):
@@ -276,7 +277,7 @@ def INIT():
     end         = tz.time()
     INITTIME    = (end-start)
 
-    print (' [INIT] device latency: {}'.format(device_latency))
+    #print (' [INIT] device latency: {}'.format(device_latency))
     print (' [INIT] processing time: {}'.format(INITTIME+args.low))   
     
 
