@@ -222,9 +222,13 @@ def OPENFILE():
                 count          +=1
                 end             = time.time()                           # end of creation
 
+                paket_creation_time = (end-start)+0.000006              # addtion time-function
+
                 # global periodtime
-                CHUNK_TIMEOUT = (float(args.blocksize) / f.samplerate)  # set wait time
-                time.sleep(CHUNK_TIMEOUT-(end-start))                   # pull creation time...
+                CHUNK_TIMEOUT = (float(args.blocksize) / f.samplerate)-paket_creation_time  
+                
+                # wait for first paket
+                time.sleep(CHUNK_TIMEOUT-paket_creation_time)          
 
                 #print (' [OPENFILE] Chunklength: {}'.format(CHUNK_TIMEOUT))
            
