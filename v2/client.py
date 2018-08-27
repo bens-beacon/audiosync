@@ -227,7 +227,7 @@ def INIT():
     global INITTIME
 
     # the 
-    simulated_max = 17
+    simulated_max = 7
 
     start       = tz.time()
 
