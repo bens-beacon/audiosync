@@ -69,7 +69,7 @@ def CONNECTOR(UDP_IP, UDP_PORT):
                 if data == 'WANNA CONNECT TO SERVER':  
                         rtt_time = rtt.getRTT(sock,first_addr)
                         sock.sendto('RTT DONE', first_addr)
-                        print (' [CONNECTOR] got new client on ({}, {}) RTT: {}'.format(
+                        print (' [CONNECTOR] got new client on ({}, {}) t_av: {}'.format(
                             first_addr[0],first_addr[1],rtt_time))
                         rtt.addClient(first_addr,rtt_time)
             except:
